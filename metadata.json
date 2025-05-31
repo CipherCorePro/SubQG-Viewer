@@ -1,0 +1,5 @@
+{
+  "name": "SubQG-Viewer",
+  "description": "A web application to simulate and analyze the SubQuantenfeld-Grundfeld (SubQG) system, exploring emergent phenomena from energy and phase wave interference.",
+  "requestFramePermissions": []
+}
