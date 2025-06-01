@@ -6,7 +6,7 @@ const LCG_A = 1103515245;
 const LCG_C = 12345;
 const LCG_M = Math.pow(2, 31);
 
-export class SeededRNG implements RNG {
+export class SubQGRNG implements RNG { // Renamed from SeededRNG
   private seed: number;
 
   constructor(seed?: number) {
@@ -32,7 +32,7 @@ export class SeededRNG implements RNG {
   public setState(seed: number): void {
     this.seed = Math.floor(seed);
      if (this.seed < 0) {
-        this.seed = (this.seed % LCG_M) + LCG_M;
+        this.seed = (this.seed % LCG_M) + LCG_M; // Corrected LCG_M
     } else {
         this.seed = this.seed % LCG_M;
     }

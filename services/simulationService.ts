@@ -1,19 +1,19 @@
 
 import type { SimulationParams, TickData, Node, RNG as RNGInterface } from '../types';
-import { SeededRNG, QuantumRNG } from '../utils/rng';
+import { SubQGRNG, QuantumRNG } from '../utils/rng'; // Updated to SubQGRNG
 
 const SIMULATION_INTERVAL_MS = 50; // Controls speed of live updates
 
-export class SimulationEngine { // Added export
+export class SimulationEngine {
   private params: SimulationParams;
-  private rng: RNGInterface;
+  public rng: RNGInterface; // Made public for App.tsx to access getState
   private energyWaveValue: number = 0;
   private phaseWaveValue: number = 0;
   private currentTick: number = 0;
   private onTickUpdate: (tickData: TickData, rngState: any) => boolean; // Return false to stop
   private onComplete: () => void;
   private intervalId: number | null = null;
-  private isEngineRunning: boolean = false; // Renamed to avoid confusion with App's isRunning
+  private isEngineRunning: boolean = false;
 
   constructor(
     params: SimulationParams,
@@ -25,16 +25,14 @@ export class SimulationEngine { // Added export
     this.onTickUpdate = onTickUpdate;
     this.onComplete = onComplete;
 
-    if (params.rngType === 'pseudo') {
-      const seededRng = new SeededRNG(params.seed);
-      // initialRngState is used if provided, otherwise the seed from params is used by SeededRNG constructor
-      if (initialRngState !== null && initialRngState !== undefined) {
-        seededRng.setState(initialRngState as number);
+    if (params.rngType === 'subqg') { // Changed from 'pseudo'
+      const subqgRng = new SubQGRNG(params.seed); // Changed from SeededRNG
+      if (initialRngState !== null && initialRngState !== undefined && subqgRng.setState) {
+        subqgRng.setState(initialRngState as number);
       }
-      this.rng = seededRng;
+      this.rng = subqgRng;
     } else {
       this.rng = new QuantumRNG();
-      // QuantumRNG is stateless for this example, so initialRngState is ignored
     }
   }
 
@@ -55,21 +53,29 @@ export class SimulationEngine { // Added export
 
   private checkNodeFormation(tick: number, interference: number, threshold: number): Node | null {
     if (interference > threshold) {
-      return { tick, interferenceValue: interference };
+      const spin = Math.random() > 0.5 ? 1 : -1;
+      const topologyType = 
+          interference > (threshold + (1 - threshold) * 0.66) ? 'HighInterference' 
+        : interference > (threshold + (1 - threshold) * 0.33) ? 'MidInterference' 
+        : 'LowInterference';
+      return { 
+        tick, 
+        interferenceValue: interference,
+        spin,
+        topologyType 
+      };
     }
     return null;
   }
 
   private simulationStep(): void {
-    if (!this.isEngineRunning) { // Check internal running state
-        // If stop() was called, this.isEngineRunning will be false, and the interval should have been cleared.
-        // This check is a safeguard.
+    if (!this.isEngineRunning) {
         if (this.intervalId !== null) clearInterval(this.intervalId);
         this.intervalId = null;
         return;
     }
     if (this.currentTick >= this.params.duration) {
-      this.stop(); // Stop internally
+      this.stop();
       this.onComplete();
       return;
     }
@@ -82,10 +88,8 @@ export class SimulationEngine { // Added export
     const interference = this.calculateInterference(this.energyWaveValue, this.phaseWaveValue);
     const node = this.checkNodeFormation(this.currentTick, interference, this.params.threshold);
 
-    const currentRngState = (this.rng as SeededRNG).getState ? (this.rng as SeededRNG).getState() : null;
+    const currentRngState = (this.rng as SubQGRNG).getState ? (this.rng as SubQGRNG).getState() : null;
 
-    // onTickUpdate now always returns true from App.tsx to keep engine's interval alive.
-    // Stopping is handled by calling engine.stop() or duration completion.
     this.onTickUpdate(
       {
         tick: this.currentTick,
@@ -101,9 +105,8 @@ export class SimulationEngine { // Added export
   }
 
   public start(): void {
-    if (this.isEngineRunning) return; // Already running
+    if (this.isEngineRunning) return;
     this.isEngineRunning = true;
-    // Clear any existing interval before starting a new one (robustness)
     if (this.intervalId !== null) {
         clearInterval(this.intervalId);
     }
@@ -118,7 +121,6 @@ export class SimulationEngine { // Added export
     }
   }
 }
-
 
 export const runSimulation = (
   params: SimulationParams,

@@ -30,9 +30,15 @@ export const SimulationView: React.FC<SimulationViewProps> = ({ tickData, formed
           <div className="max-h-80 overflow-y-auto bg-slate-800 p-4 rounded-lg shadow">
             <ul className="space-y-2">
               {formedNodes.map((node, index) => (
-                <li key={index} className="text-sm p-2 bg-slate-700 rounded">
-                  Tick: <span className="font-semibold text-sky-400">{node.tick}</span>, 
-                  Interference: <span style={{ color: CHART_NODE_COLOR }} className="font-semibold">{node.interferenceValue.toFixed(3)}</span>
+                <li key={index} className="text-sm p-2 bg-slate-700 rounded flex flex-wrap justify-between items-center">
+                  <div>
+                    Tick: <span className="font-semibold text-sky-400">{node.tick}</span>, 
+                    Interference: <span style={{ color: CHART_NODE_COLOR }} className="font-semibold">{node.interferenceValue.toFixed(3)}</span>
+                  </div>
+                  <div className="text-xs text-slate-400 ml-2">
+                    {node.spin !== undefined && `Spin: ${node.spin > 0 ? '+' : ''}${node.spin}`}
+                    {node.topologyType && <span className="ml-2">Type: {node.topologyType}</span>}
+                  </div>
                 </li>
               ))}
             </ul>

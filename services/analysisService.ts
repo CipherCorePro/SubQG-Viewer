@@ -16,12 +16,12 @@ export const analyzeData = (nodes: Node[], duration: number, segmentDurationPara
   }
 
   // Riemann data: Use interference values of formed nodes as proxy for Re(s)
-  // The idea is to see if these values cluster around 0.5 as per the description's hint.
   const riemannData = nodes.map(node => node.interferenceValue);
 
   return {
     nodeCountsPerSegment,
     riemannData,
     totalNodes: nodes.length,
+    clusterTimeMapData: nodes, // Pass all nodes for the cluster time map
   };
 };

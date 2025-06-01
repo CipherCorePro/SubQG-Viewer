@@ -1,226 +1,155 @@
-# SubQG-Viewer: Umfassende Dokumentation
 
-## 1. Einleitung & Überblick
+# 🌟 SubQG-Viewer: Simulation emergenter Strukturen aus subquanten Fluktuationen
 
-Der SubQG-Viewer ist eine interaktive Webanwendung, die zur Simulation und Analyse des theoretischen "SubQuantenfeld-Grundfeld" (SubQG) Systems entwickelt wurde. Die Kernidee des SubQG-Modells postuliert, dass die wahrgenommene physikalische Realität – einschließlich Raumzeit, Materie und Energie – aus der Interferenz fundamentalerer Energie- und Phasenwellen in einem fluktuierenden Subquantenfeld emergiert.
+[![Lizenz: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Diese Anwendung ermöglicht es Benutzern:
+## 🚀 Überblick
 
-* Simulationsparameter zu konfigurieren, um verschiedene Szenarien des SubQG-Modells zu untersuchen.
-* Die Simulation in Echtzeit zu beobachten, einschließlich der Dynamik der Energie- und Phasenwellen sowie der Bildung von "Knoten".
-* Die resultierenden Daten zu analysieren, um emergente Phänomene und Muster zu identifizieren.
-* Wissenschaftliche Analysen und Berichte mithilfe der Google Gemini API zu generieren, basierend auf den Simulationsergebnissen.
+Der **SubQG-Viewer** ist eine interaktive Webanwendung zur Simulation und Analyse des theoretischen "SubQuantumField-Grundfeld" (SubQG). Dieses Projekt untersucht die Hypothese, dass Raumzeit, Materie und Energie aus Interferenzmustern subquanter Energie- und Phasenwellen entstehen.
 
-Ziel ist es, ein Werkzeug zur Verfügung zu stellen, das Einblicke in die Prinzipien der Emergenz und die potenziellen mathematischen Strukturen bietet, die im scheinbaren Zufall des Subquantenfeldes verborgen liegen könnten.
+### Funktionen:
+- ⚙️ **Simulation konfigurieren**: Dauer, Schwelle, Rauschen, RNG-Typ, Seed
+- 📈 **Echtzeitbeobachtung**: Visualisierung von Wellen, Interferenz und Knotenbildung (inkl. `spin` und `topologyType`)
+- 🤖 **Analyse durch KI**: Berichte mit der Google Gemini API generieren, inkl. Kontexten wie CDT, GFT, LQG
 
-## 2. Installation und Setup
+Ziel ist es, ein Werkzeug zur Erforschung emergenter Prinzipien und verborgener Strukturen im scheinbaren Zufall subquanter Felder bereitzustellen.
 
-### 2.1 Voraussetzungen
+## ✨ Hauptmerkmale
 
-* **Node.js** (empfohlen: v16.x oder höher)
-* npm
-* optional: Git
+- 🔧 Interaktive Konfiguration
+- 📊 Echtzeit-Charts für Energie-/Phasenwellen, Interferenz, Knoten
+- 📑 KI-gestützte Analyseberichte (Markdown, wissenschaftlich)
+- 🔍 Cluster-Zeitkarten, Riemann-Histogramme
+- 📂 Exportfunktionen (CSV, JSON)
+- 🛡️ Sicherer Proxy für Gemini API
 
-### 2.2 Projektdateien erhalten
+## 🛠️ Technologie-Stack
 
-* ZIP-Datei entpacken **oder**
-* Repository klonen:
+- **Frontend**: React 19, TypeScript, Vite, TailwindCSS, Recharts
+- **Backend**: Node.js, Express, @google/generative-ai, dotenv, cors, body-parser
+- **KI-Integration**: Google Gemini API (`gemini-2.5-flash-preview-04-17`)
 
+## ⚙️ Installation & Setup
+
+### 1. Voraussetzungen
+- Node.js (>=16.x), npm
+- Optional: Git
+
+### 2. Projekt klonen oder herunterladen
 ```bash
-git clone <REPOSITORY_URL>
+git clone https://deine-url/subqg-viewer.git
 cd subqg-viewer
-```
+````
 
-### 2.3 Abhängigkeiten installieren
+### 3. Abhängigkeiten installieren
 
 ```bash
 npm install
 ```
 
-Dieser Befehl liest die `package.json`-Datei und installiert alle dort aufgeführten Pakete, einschließlich React, Vite, Express und das Google Generative AI SDK.
+### 4. API-Key einrichten
 
-### 2.4 API-Schlüssel einrichten
-
-Die Anwendung verwendet die Google Gemini API für erweiterte Analysen. Hierfür benötigen Sie einen API-Schlüssel.
-
-1. Erstellen Sie eine Datei namens `.env` im Hauptverzeichnis des Projekts.
-2. Fügen Sie Ihren Gemini API-Schlüssel in die Datei ein:
+Datei `.env` erstellen:
 
 ```env
-GEMINI_API_KEY=DEIN_GOOGLE_API_SCHLUESSEL_HIER
+GEMINI_API_KEY=DEIN_KEY
 ```
 
-> **Wichtig**: `.env` darf nicht versioniert werden. Tragen Sie sie in `.gitignore` ein.
+**Wichtig:** Datei `.env` in `.gitignore` aufnehmen.
 
-### 2.5 Anwendung starten
-
-Die Anwendung besteht aus zwei Teilen: einem Backend-Proxy-Server und einem Frontend-Vite-Server.
-
-**Backend starten:**
+### 5. Anwendung starten (zwei Terminals)
 
 ```bash
-npm run start-proxy
+npm run start-proxy  # Terminal A (Backend)
+npm run dev          # Terminal B (Frontend)
 ```
 
-**Frontend starten:**
+Zugriff über: [http://localhost:3000](http://localhost:3000)
 
-```bash
-npm run dev
+## 🗂️ Projektstruktur (Kurzfassung)
+
 ```
-
-Aufruf im Browser unter: [http://localhost:3000](http://localhost:3000)
-
-## 3. Projektstruktur
-
-```plaintext
 subqg-viewer/
-├── src/
-│   ├── components/        # UI-Komponenten (Charts, Panels)
-│   ├── services/          # Simulation & Analyse
-│   ├── utils/             # RNG, Exporte, Hilfsfunktionen
-│   ├── icons/             # SVG-Icons
-│   ├── App.tsx            # Hauptlogik
-│   ├── index.tsx
-│   ├── constants.ts
-│   └── types.ts
-├── server/
-│   └── index.js           # Express-Proxy
-├── metadata.json
-├── package.json
-├── vite.config.ts
-├── tsconfig.json
-├── index.html
-├── .env
+├── server/index.js          # Proxy-Backend
+├── src/components/          # UI-Module (Charts, Panels, etc.)
+├── src/services/            # Simulation und Analyse
+├── src/utils/               # RNGs, Exporte, Konstanten
+├── .env                     # (nicht versionieren)
+├── vite.config.ts           # Devserver & Proxy
 └── README.md
 ```
 
-## 4. Theoretische Grundlagen
+## 📘 Konzepte des SubQG-Modells
 
-### 4.1 Subquantenfeld (SubQG)
+* **SubQG-Feld**: Fundamentales, unterliegendes Wellenfeld
+* **Energie-/Phasenwellen**: chaotisch vs. kohärent
+* **Knotenbildung**: bei starker Interferenz → + `spin`, `topologyType`
 
-Ein nicht-räumliches, dynamisches Grundfeld aus Energie- und Phasenwellen. Kein klassisches Vakuum, sondern eine Matrix überlagerter Zustände.
+## 🚦 Ablauf & Logik
 
-### 4.2 Welleninterferenz
+* **Frontend (React SPA)**: Parameter, Charts, Statusanzeige
+* **Backend (Express)**: sicheres Routing zur Gemini API
+* **Simulation**:
 
-* **Energiewelle**: Zufällig modulierte Amplitude mit lokalem Ordnungspotenzial.
-* **Phasenwelle**: Kohärenz der Zustände, durch Zufall beeinflusst.
+  * RNG: SubQGRNG (det.) oder QuantumRNG (Math.random)
+  * Interferenzwert > Schwelle → Node (inkl. `spin` + Typ)
+* **Analyse**:
 
-### 4.3 Knotenbildung
+  * Knotenzählung, Riemann-Daten, Cluster-Zeitkarte
+* **Gemini-Prompts**: Vergleiche, Tiefenanalyse, Theoriekontexte
 
-Wenn beide Wellen konstruktiv interferieren und eine definierte Schwelle überschreiten, entsteht ein Knoten. Dieser gilt als Keimzelle für makrophysikalische Struktur.
+## 🧭 Benutzeroberfläche
 
-## 5. Systemlogik
+* **Sidebar**: Parameter, Seed, RNG-Typ, Kontext
+* **Simulation View**: Live-Wellen und Knoten
+* **Analyse View**: Diagramme, Verteilungen
+* **Aktionen**: Export, Bericht erstellen, Vergleich starten
 
-### 5.1 Frontend
+## 🧠 Comparative Context (Optional)
 
-* React + TypeScript + Vite
-* Hooks: `useState`, `useEffect`, `useRef`
-* Komponentenarchitektur in `/components`
-* Styling: TailwindCSS
+Ein mehrzeiliges Texteingabefeld zur Formulierung eines theoretischen Rahmens oder gezielter Hypothesen für die Analyse durch Gemini. Beispieleingaben:
 
-### 5.2 Backend (Gemini-Proxy)
+* „Untersuche mögliche Korrespondenzen zu Skalierungseigenschaften in der Kausalen Dynamischen Triangulation (CDT).“
+* „Gibt es Analogien zur Kondensatphase in der Group Field Theory (GFT) bezüglich der Knotendichte?“
+* „Analysiere die Spin-Verteilung im Kontext von Loop Quantum Gravity (LQG) Elementen.“
+* „Fokus auf Phasenübergänge bei Variation des Noise Levels.“
 
-* Express.js-Server in `server/index.js`
-* Endpoint: `POST /api/gemini`
-* Nutzung des Google SDK
+Dieser Kontext wird an die Gemini API übergeben, um die Analyse entlang spezifizierter theoretischer Perspektiven zu lenken.
 
-### 5.3 Simulation
-
-* `SimulationEngine` in `simulationService.ts`
-* Schrittweise Berechnung pro Tick:
-
-  * Energie- und Phasenwerte
-  * Interferenz
-  * Prüfung auf Knotenbildung
-
-### 5.4 Analyse
-
-* `analysisService.ts`
-* Segmentierung, Knotenzählung, Histogramm
-* Riemann-Proxy als Metapher für mathematische Tiefe
-
-### 5.5 Gemini-Prompting
-
-* Markdown-Bericht (wissenschaftlich)
-* Publikationsanalyse (Executive Summary, Hypothesen etc.)
-
-## 6. Benutzeroberfläche
-
-### 6.1 Configuration Panel
-
-* Dauer, Schwelle, Noise, RNG, Seed, Analyse-Intervalle
-
-### 6.2 Steuerung
-
-* Start / Pause / Resume / Reset
-
-### 6.3 Visualisierung
-
-* Live-Wellen-Diagramm
-* Knotenliste
-
-### 6.4 Analyse-Ansicht
-
-* Knotenanzahl pro Segment (BarChart)
-* Riemann-Histogramm mit Referenzlinie
-
-### 6.5 Report-Modal
-
-* Spinner, Ergebnisse, Download
-* Zwei Modi: Report / Publication
-
-## 7. Formeln & Kernfunktionen
-
-### 7.1 RNG (utils/rng.ts)
+## 🧮 Formeln & Berechnungen
 
 ```ts
-X_n+1 = (a * X_n + c) mod m
+spin = Math.random() > 0.5 ? 1 : -1
+interference = (energy + phase) / 2
+if (interference > threshold) {
+   topology = 'Low/Mid/High' // je nach Stärke
+}
 ```
 
-Mit:
-`a = 1103515245`, `c = 12345`, `m = 2^31`
+## 🚑 Fehlerbehebung
 
-### 7.2 Wellenberechnung
+* ⚠️ Beide Terminals gestartet?
+* ⚠️ .env korrekt?
+* ⚠️ Browserkonsole (F12) auf Fehler prüfen
 
-```ts
-energy = current + (rng - 0.5) * noise * DAMPING;
-phase = sin(asin(current) + (rng - 0.5) * noise * DAMPING);
+## 📖 Glossar
+
+| Begriff             | Bedeutung                                 |
+| ------------------- | ----------------------------------------- |
+| SubQG RNG           | Deterministischer Generator (SubQG-Ebene) |
+| Quantum RNG         | Stochastisch (klassisch)                  |
+| spin                | +1 oder -1 je Knoten                      |
+| topologyType        | Low/Mid/High Interferenztyp               |
+| Cluster Time Map    | Tick vs. Interferenz (farbig nach Spin)   |
+| Comparative Context | Nutzertext für gezielte KI-Analyse        |
+
+## 🚀 Zukunftsideen
+
+* Dynamischere Topologie-Logik
+* Interaktive Filter für Diagramme
+* Vergleich mit CDT/GFT/LQG quantifizieren
+* Simulationen abspeichern/laden
+
 ```
 
-### 7.3 Interferenz & Knoten
 
-```ts
-interference = (energy + phase) / 2;
-if (interference > threshold) → Knoten
-```
-
-## 8. Troubleshooting
-
-| Problem                   | Lösung                                 |
-| ------------------------- | -------------------------------------- |
-| Leere Seite               | Beide Server gestartet? Konsole prüfen |
-| Gemini ohne Antwort       | `.env` prüfen, Netz & Key gültig?      |
-| Export funktioniert nicht | Daten vorhanden? Console prüfen        |
-| Port 3000/3001 belegt     | In Config ändern                       |
-
-## 9. Glossar
-
-* **SubQG**: Grundfeld aus Energie-/Phasenwellen
-* **Tick**: Diskreter Simulationsschritt
-* **Knoten**: Stabiler Interferenzpunkt > Schwelle
-* **Riemann-Proxy**: Histogramm über Interferenzwerte
-* **LCG**: Linearer Pseudo-Zufallszahlengenerator
-
-## 10. Zukünftige Erweiterungen
-
-* 2D/3D Knotendarstellung
-* Speicherung von Runs und Parametern
-* Erweiterte Statistik (Cluster, Korrelation)
-* Vergleich multipler Läufe
-* Erweiterung um räumliche Logik
-
----
-
-> **Lizenz**: GNU GPL v2.0
-> **Autor**: Ralf Krümmel
-> **Ziel**: Validierung einer subquanteninduzierten Emergenz kosmologischer Strukturen

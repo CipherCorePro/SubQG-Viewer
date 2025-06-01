@@ -6,7 +6,13 @@ export function exportNodesToJSON(nodes: Node[], filename: string = 'subqg_nodes
     alert("No node data to export.");
     return;
   }
-  const jsonString = JSON.stringify(nodes, null, 2);
+  const nodesToExport = nodes.map(node => ({
+    tick: node.tick,
+    interferenceValue: node.interferenceValue,
+    spin: node.spin, // Added spin
+    topologyType: node.topologyType, // Added topologyType
+  }));
+  const jsonString = JSON.stringify(nodesToExport, null, 2);
   const blob = new Blob([jsonString], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -23,8 +29,10 @@ export function exportNodesToCSV(nodes: Node[], filename: string = 'subqg_nodes.
     alert("No node data to export.");
     return;
   }
-  const header = 'tick,interferenceValue\n';
-  const csvRows = nodes.map(node => `${node.tick},${node.interferenceValue.toFixed(5)}`);
+  const header = 'tick,interferenceValue,spin,topologyType\n';
+  const csvRows = nodes.map(node => 
+    `${node.tick},${node.interferenceValue.toFixed(5)},${node.spin ?? ''},${node.topologyType ?? ''}`
+  );
   const csvString = header + csvRows.join('\n');
   
   const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });

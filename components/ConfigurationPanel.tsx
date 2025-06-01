@@ -6,7 +6,6 @@ interface ConfigurationPanelProps {
   params: SimulationParams;
   onParamsChange: (newParams: Partial<SimulationParams>) => void;
   isRunning: boolean;
-  // New props for actions
   onExportJSON: () => void;
   onExportCSV: () => void;
   onGenerateMarkdownReport: () => void;
@@ -26,10 +25,11 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     onGeneratePublicationAnalysis,
     isGeneratingPublicationAnalysis
 }) => {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    let processedValue: string | number = value;
-    if (type === 'number' || e.target.dataset.type === 'number') {
+    let processedValue: string | number | undefined = value;
+    
+    if (type === 'number' || (e.target instanceof HTMLInputElement && e.target.dataset.type === 'number')) {
         processedValue = value === '' ? '' : parseFloat(value);
         if (name === 'seed' && value === '') {
              onParamsChange({ [name]: undefined });
@@ -39,7 +39,7 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
             processedValue = parseInt(value, 10);
         }
     }
-    onParamsChange({ [name]: processedValue });
+    onParamsChange({ [name]: processedValue as any }); // Cast to any to satisfy diverse types
   };
 
   return (
@@ -108,14 +108,14 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
             disabled={isRunning}
             className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-slate-100 disabled:opacity-50"
           >
-            <option value="pseudo">Pseudo RNG</option>
+            <option value="subqg">SubQG RNG (Deterministic)</option> {/* Changed from pseudo */}
             <option value="quantum">Quantum RNG (Simulated)</option>
           </select>
         </div>
 
-        {params.rngType === 'pseudo' && (
+        {params.rngType === 'subqg' && ( // Changed from 'pseudo'
           <div>
-            <label htmlFor="seed" className="block text-sm font-medium text-slate-300 mb-1 mt-4">Seed (for Pseudo RNG)</label>
+            <label htmlFor="seed" className="block text-sm font-medium text-slate-300 mb-1 mt-4">Seed (for SubQG RNG)</label> {/* Changed from Pseudo */}
             <input
               type="number"
               name="seed"
@@ -142,6 +142,19 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
             max="100"
             step="1"
             disabled={isRunning}
+            className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-slate-100 disabled:opacity-50"
+          />
+        </div>
+         <div>
+          <label htmlFor="comparativeContext" className="block text-sm font-medium text-slate-300 mb-1 mt-4">Comparative Context (Optional)</label>
+          <textarea
+            name="comparativeContext"
+            id="comparativeContext"
+            value={params.comparativeContext || ''}
+            onChange={handleInputChange}
+            disabled={isRunning}
+            placeholder="e.g., Notes on CDT/GFT/LQG comparison"
+            rows={3}
             className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-slate-100 disabled:opacity-50"
           />
         </div>
