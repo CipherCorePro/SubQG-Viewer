@@ -1,7 +1,8 @@
 
 # 🌟 SubQG-Viewer: Simulation emergenter Strukturen aus subquanten Fluktuationen
 
-[![Lizenz: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Lizenz: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+
 
 ## 🚀 Überblick
 
